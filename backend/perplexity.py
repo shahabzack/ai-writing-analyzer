@@ -10,7 +10,10 @@ model = GPT2LMHeadModel.from_pretrained(model_name)
 # Perplexity
 
 def calculate_perplexity(text):
-    inputs = tokenizer(text,return_tensors="pt")
+    inputs = tokenizer(text,
+                       return_tensors="pt",
+                       truncation=True,
+                       max_length=1024)  # gpt2 max token support
 
     with torch.no_grad():
         outputs = model(**inputs,labels=inputs["input_ids"])
