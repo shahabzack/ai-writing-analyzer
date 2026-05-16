@@ -11,6 +11,7 @@ export default function Home() {
   const [feedbackSaved, setFeedbackSaved] = useState(false);
 
   const analyzeText = async () => {
+
     setFeedbackSaved(false);
     setError("");
 
@@ -22,6 +23,7 @@ export default function Home() {
         "http://127.0.0.1:8000/analyze",
         {
           method: "POST",
+
           headers: {
             "Content-Type": "application/json",
           },
@@ -49,6 +51,7 @@ export default function Home() {
     }
   };
 
+
   const saveFeedback = async (label: string) => {
 
     try {
@@ -63,18 +66,27 @@ export default function Home() {
           },
 
           body: JSON.stringify({
+
             text: text,
             label: label,
+
             perplexity: result.perplexity,
             burstiness: result.burstiness,
+
+            avg_sentence_length:
+              result.avg_sentence_length,
+
+            vocabulary_diversity:
+              result.vocabulary_diversity
           }),
         }
       );
 
       const data = await response.json();
-      setFeedbackSaved(true);
 
       console.log(data);
+
+      setFeedbackSaved(true);
 
     } catch (error) {
 
@@ -82,6 +94,7 @@ export default function Home() {
 
     }
   };
+
 
   return (
 
@@ -111,9 +124,10 @@ export default function Home() {
         </p>
       )}
 
+
       {result && (
 
-        <div className="mt-6 border p-4">
+        <div className="mt-6 border p-4 space-y-2">
 
           <p>
             Perplexity: {result.perplexity}
@@ -124,15 +138,32 @@ export default function Home() {
           </p>
 
           <p>
-            Analysis: {result.analysis}
+            Average Sentence Length:
+            {" "}
+            {result.avg_sentence_length}
           </p>
 
           <p>
-            Confidence: {result.confidence}
+            Vocabulary Diversity:
+            {" "}
+            {result.vocabulary_diversity}
+          </p>
+
+          <p>
+            Prediction:
+            {" "}
+            <strong>{result.prediction}</strong>
+          </p>
+
+          <p>
+            Confidence:
+            {" "}
+            {result.confidence}%
           </p>
 
         </div>
       )}
+
 
       {result && !feedbackSaved && (
 
@@ -155,11 +186,14 @@ export default function Home() {
         </div>
       )}
 
+
       {feedbackSaved && (
-  <p className="text-green-600 mt-4">
-    Thank you for your  feedback!
-  </p>
-)}
+
+        <p className="text-green-600 mt-4">
+          Thank you for your feedback!
+        </p>
+
+      )}
 
     </div>
   );
