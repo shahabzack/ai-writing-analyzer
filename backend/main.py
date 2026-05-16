@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 model = joblib.load(
-    "../analysis/outputs/ai_text_detector_model.pkl"
+    "models/ai_text_detector_model.pkl"
 )
 
 
