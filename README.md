@@ -13,7 +13,7 @@
 
 ![Demo 1](./assets/demo1.png)
 ![Demo 2](./assets/demo2.png)
-![Demo 3](./assets/demo3.png)
+![Demo 3](./assets/demoo.png)
 
 An end-to-end AI text analysis system built using FastAPI, Next.js, Machine Learning, and Supabase.
 
