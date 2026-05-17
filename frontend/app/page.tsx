@@ -80,9 +80,23 @@ export default function Home() {
         }),
       });
 
-      const data = await response.json();
-      console.log(data);
-      setFeedbackSaved(true);
+      if (response.ok) {
+
+  const data = await response.json();
+
+  console.log(data);
+
+  setFeedbackSaved(true);
+
+} else {
+
+  const errorData = await response.json();
+
+  console.error(errorData);
+
+  setError("Failed to save feedback.");
+
+}
     } catch (error) {
       console.error(error);
     }

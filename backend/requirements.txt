@@ -6,3 +6,5 @@ nltk
 textstat
 joblib
 scikit-learn
+supabase
+python-dotenv

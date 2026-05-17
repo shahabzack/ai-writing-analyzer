@@ -2,9 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import HTTPException
 from pydantic import BaseModel
+from supabase_client import supabase
 
 import re
-import csv
 import logging
 import joblib
 
@@ -113,25 +113,21 @@ def save_feedback(data: FeedbackRequest):
 
     try:
 
-        with open(
-            "dataset.csv",
-            "a",
-            newline="",
-            encoding="utf-8"
-        ) as file:
+        supabase.table("feedback").insert({
 
-            writer = csv.writer(file)
+            "text": data.text,
+            "label": data.label,
 
-            writer.writerow([
-                data.text,
-                data.label,
+            "perplexity": data.perplexity,
+            "burstiness": data.burstiness,
 
-                data.perplexity,
-                data.burstiness,
-
+            "avg_sentence_length":
                 data.avg_sentence_length,
+
+            "vocabulary_diversity":
                 data.vocabulary_diversity
-            ])
+
+        }).execute()
 
         logger.info("Feedback saved successfully")
 
@@ -140,6 +136,9 @@ def save_feedback(data: FeedbackRequest):
         }
 
     except Exception as e:
+
+        import traceback
+        traceback.print_exc()
 
         logger.error(f"Error saving feedback: {str(e)}")
 
